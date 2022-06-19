@@ -9,6 +9,7 @@ let encryptedPassword;
 
 const username = faker.name.findName();
 const userpassword = faker.internet.password();
+const phoneNum = faker.phone.phoneNumber('601#-#######');
 
 bcrypt.genSalt(saltRounds, function (saltError, salt) {
     if (saltError) {
@@ -40,28 +41,28 @@ describe("User Account", () => {
 	})
 
 	test("New user registration", async () => {
-		const res = await User.register(username,userpassword,encryptedPassword)
-		expect(res).toBe("Successfully, create new account")
+		const res = await User.register(username,userpassword,encryptedPassword,phoneNum)
+		expect(res).toBe("Done create your account!!")
 	})
 
 	test("Duplicate username", async () => {
-		const res = await User.register(username,userpassword,encryptedPassword)
-		expect(res).toBe("Username exists")
+		const res = await User.register(username,userpassword,encryptedPassword,phoneNum)
+		expect(res).toBe("Username already used")
 	})
 
 	test("User login invalid username", async () => {
 		const res = await User.login("Apip",userpassword)
-		expect(res).toBe("The Username is invalid")
+		expect(res).toBe("The username is wrong")
 	})
 
 	test("User login invalid password", async () => {
-		const res = await User.login("Seth Kunde","ZsdyonNRkxXXpq")
-		expect(res).toBe("The Password is invalid")
+		const res = await User.login("Ellen McLaughlin","NK4zyE9avkmnx")
+		expect(res).toBe("Wrong Input")
 	})
 
 	test("Username doesn't exist to login", async () => {
 		const res = await User.login("Apop","1423")
-		expect(res).toBe("Invalid Input");
+		expect(res).toBe("Wrong Input");
 	  })
 
 	test("User login successfully", async () => {

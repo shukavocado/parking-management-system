@@ -13,7 +13,9 @@
 		"faker": "^6.6.6",
 		"jest": "^27.5.1",
 		"mongodb": "^4.6.0",
-		"supertest": "^6.2.3"
+		"supertest": "^6.2.3",
+		"swagger-jsdoc": "^6.2.1",
+		"swagger-ui-express": "^4.4.0"
 	},
 	"devDependencies": {
 		"@faker-js/faker": "^6.3.1",

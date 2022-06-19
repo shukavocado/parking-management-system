@@ -8,10 +8,10 @@ let encryptedPassword;
 
 class User {
 	static async injectDB(conn) {
-		users = await conn.db("Lab8").collection("users")
+		users = await conn.db("Assignment").collection("admin")
 	}
-//register
-	static async register(username,userpassword,encryptedPassword) {
+//register staff
+	static async register(username,userpassword,phoneNum,encryptedPassword) {
 
 		bcrypt.genSalt(saltRounds, function (saltError, salt) {
 			if (saltError) {
@@ -38,7 +38,7 @@ class User {
 			if (user){
 				if ( user.name == username )		
 				{
-					return "Username exists";
+					return "Username already used";
 				}
 			}
 			else{
@@ -46,12 +46,13 @@ class User {
 				await users.insertOne({					
 					"name" : username,
 					"password" : userpassword,
-					"encryptedpassword" : encryptedPassword
+					"encryptedpassword" : encryptedPassword,
+					"phone number": phoneNum,
 				})
-				return "Successfully, create new account"
+				return "Done create your account!!"
 			}
 		})	
-		return user;	
+		return user;
 	}
 
 	//login
@@ -63,11 +64,11 @@ class User {
 			if (user)
 			{													
 				if (user.name != username && user.password == userpassword) {		
-					return "The Username is invalid";
+					return "The username is wrong";
 				}
 				else if (user.name == username && user.password != userpassword) 
 				{	
-					return "The Password is invalid";
+					return "The password is wrong";
 				}
 				else
 				{
@@ -76,28 +77,28 @@ class User {
 			}
 			else
 		{
-			return "Invalid Input";
+			return "Wrong Input";
 		}
 		})
 		return user;
 	}
 
 	//updates
-	static async update(username) {
+	static async update(username, phoneNum) {
 
 		return users.findOne({"name" : username})
 		.then(async user =>{
 			//console.log(user)
 			if (user)
 			{									
-				return users.updateOne({"name" : username},{"$set":{no_matrix: "b022010047" }})
+				return users.updateOne({"name" : username},{$set : { phoneNum : "01774683939"}})
 				.then(result =>{
 					console.log(result)
 				})
 			}
 			else
 			{
-			return "The Username is incorrect";
+			return "The username is wrong";
 			}
 		})
 	}
@@ -110,15 +111,15 @@ class User {
 	
 		  if (user){
 			if (user.password != userpassword){
-			  return "The Password is invalid"
+			  return "The password is wrong"
 			}
 			else {
 			  await users.deleteOne({"name" : username})
-				return "Data deleted successfully"
+				return "Data have been deleted"
 			}
 		  }
 		  else {
-			return "The Username is invalid"
+			return "The username is wrong"
 		  }
 		})
 	  }	
